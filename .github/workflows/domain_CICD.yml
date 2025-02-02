@@ -28,7 +28,7 @@ jobs:
 
       # 도커 빌드 (Dockerfile 경로 지정)
       - name: Build Docker
-        run: docker build --platform linux/amd64 -f ./path/to/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/main_server .
+        run: docker build --platform linux/amd64 -f Dockerfile -t ${{ secrets.DOCKER_DOCKERHUB_USERNAME }}/main_server .
 
       # 도커 푸시
       - name: Push Docker
