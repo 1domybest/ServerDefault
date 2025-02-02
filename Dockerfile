@@ -1,19 +1,19 @@
 # 서버설정
 # 베이스 이미지 선택 (필요에 따라 변경 가능)
-FROM ubuntu:latest
-
-# 작업 디렉토리 설정
-WORKDIR /app
-
-RUN mkdir -p /home/ubuntu/compose
-
-# 현재 디렉토리의 compose 폴더를 컨테이너 내부로 복사
-COPY compose/ /home/ubuntu/compose/
-
-COPY main_docker_compose.yml /home/ubuntu/
-
-# 기본 명령어 설정 (필요에 따라 수정)
-CMD ["bash"]
+#FROM ubuntu:latest
+#
+## 작업 디렉토리 설정
+#WORKDIR /app
+#
+#RUN mkdir -p /home/ubuntu/compose
+#
+## 현재 디렉토리의 compose 폴더를 컨테이너 내부로 복사
+#COPY compose/ /home/ubuntu/compose/
+#
+#COPY main_docker_compose.yml /home/ubuntu/
+#
+## 기본 명령어 설정 (필요에 따라 수정)
+#CMD ["bash"]
 
 # 1. Nginx 설정 디렉토리 생성
 RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
