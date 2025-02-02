@@ -1,0 +1,11 @@
+services:
+  certbot:
+    image: certbot/certbot
+    container_name: certbot_init
+    depends_on:
+      - nginx
+    volumes:
+      - ./certs:/etc/letsencrypt  # 인증서 저장
+      - ./nginx/html:/var/www/html  # 웹루트 공유
+    entrypoint: >
+      /bin/sh -c "certbot certonly --webroot -w /var/www/html -d yourdomain.com --email your@email.com --agree-tos --non-interactive && echo 'SSL 발급 완료'"

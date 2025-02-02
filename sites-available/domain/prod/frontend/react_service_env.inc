@@ -1,0 +1,1 @@
+set $react_service_url react_prod_blue;

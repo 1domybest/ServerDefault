@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  blue:
+    image: otisaws/react_qa_blue:latest
+    container_name: react_qa_blue
+    ports:
+      - "3000:80"

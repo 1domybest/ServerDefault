@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  blue:
+    image: otisaws/spring_qa_blue:latest
+    container_name: spring_qa_blue
+    ports:
+      - "8080:8080"
+    environment:
+      PROFILES: qa_blue
+      ENV: qa_blue

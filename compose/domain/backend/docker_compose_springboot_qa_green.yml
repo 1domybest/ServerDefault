@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  blue:
+    image: otisaws/spring_qa_green:latest
+    container_name: spring_qa_green
+    ports:
+      - "8081:8081"
+    environment:
+      PROFILES: qa_green
+      ENV: qa_green

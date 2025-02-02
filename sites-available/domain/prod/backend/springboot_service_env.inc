@@ -1,0 +1,1 @@
+set $springboot_service_url springboot_prod_blue;

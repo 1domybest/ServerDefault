@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  green:
+    image: otisaws/react_prod_green:latest
+    container_name: react_prod_green
+    ports:
+      - "3001:80"
