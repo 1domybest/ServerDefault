@@ -1,4 +1,3 @@
-# 깃헙 Action Trigger CICD
 name: CI
 
 env:
@@ -7,29 +6,18 @@ env:
   DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  PLATFORM: "react"
-  BLUE: "blue"
-  GREEN: "green"
-  BLUE_PORT: 3000
-  GREEN_PORT: 3001
-  REACT_HC_PORT: 81
-
-
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-# 읽기 권한을 부여하겠다.
 permissions:
   contents: read
 
-# Job 리스트
 jobs:
-  # 1반쩨 job = 빌드
   build:
-    runs-on: ubuntu-latest # 우분투 최신버전을 사용하겠다
+    runs-on: ubuntu-latest
     steps:
       # 도커 로그인
       - name: Login to DockerHub
@@ -38,12 +26,12 @@ jobs:
           username: ${{ env.DOCKER_DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKER_TOKEN }}
 
-      # 도커 push
+      # 도커 빌드 (Dockerfile 경로 지정)
       - name: Build Docker
-        run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/main_server .
+        run: docker build --platform linux/amd64 -f ./path/to/Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/main_server .
 
+      # 도커 푸시
       - name: Push Docker
-        # 위에서 카피한 .jar 파일과 설정들을 Docker Hub 로 Push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/main_server:latest
 
       # SSH 접속해서 docker compose 실행
@@ -56,5 +44,6 @@ jobs:
           script_stop: true
           script: |
             sudo docker pull ${{ env.DOCKER_DOCKERHUB_USERNAME }}/main_server:latest
+
 
 
