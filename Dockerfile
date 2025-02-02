@@ -10,6 +10,8 @@ RUN mkdir -p /home/ubuntu/compose
 # 현재 디렉토리의 compose 폴더를 컨테이너 내부로 복사
 COPY compose/ /home/ubuntu/compose/
 
+COPY main_docker_compose.yml /home/ubuntu/
+
 # 기본 명령어 설정 (필요에 따라 수정)
 CMD ["bash"]
 

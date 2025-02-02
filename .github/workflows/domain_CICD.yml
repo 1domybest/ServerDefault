@@ -1,6 +1,20 @@
 # 깃헙 Action Trigger CICD
 name: CI
-# 이름이 "main" 인 브랜치가 "push" or "pull_request" 가 요청되었을때 실행하겠다.
+
+env:
+  SERVER_IP: ${{secrets.SERVER_IP}}
+  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+  DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  PLATFORM: "react"
+  BLUE: "blue"
+  GREEN: "green"
+  BLUE_PORT: 3000
+  GREEN_PORT: 3001
+  REACT_HC_PORT: 81
+
+
 on:
   push:
     branches: [ "main" ]
@@ -17,14 +31,30 @@ jobs:
   build:
     runs-on: ubuntu-latest # 우분투 최신버전을 사용하겠다
     steps:
-      - name: Docker compose
-        uses: appleboy/ssh-action@master # 깃헙액션에 제공해주는 appleboy 에있는 ssh-action@master 라는 모듈을 사용하겠다.
+      # 도커 로그인
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-            # 우분투를 사용하겠다
+          username: ${{ env.DOCKER_DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKER_TOKEN }}
+
+      # 도커 push
+      - name: Build Docker
+        run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/main_server .
+
+      - name: Push Docker
+        # 위에서 카피한 .jar 파일과 설정들을 Docker Hub 로 Push
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/main_server:latest
+
+      # SSH 접속해서 docker compose 실행
+      - name: Docker compose
+        uses: appleboy/ssh-action@master
+        with:
           username: ubuntu
-          host: ${{ secrets.SPRING_BOOT_DOCKER_IP }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring_none_stop_deploy_docker:latest
-            sudo docker-compose -f docker-compose-${{env.TARGET_UPSTREAM}}.yml up -d
+            sudo docker pull ${{ env.DOCKER_DOCKERHUB_USERNAME }}/main_server:latest
+
+
