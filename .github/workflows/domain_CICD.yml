@@ -19,6 +19,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3 # 지금 트리거된 브랜치를 현재 브랜치로 checkout 하겠다
       # 도커 로그인
       - name: Login to DockerHub
         uses: docker/login-action@v1
