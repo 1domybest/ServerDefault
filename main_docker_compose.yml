@@ -3,7 +3,6 @@ services:
     image: otisaws/main_nginx:latest  # 공식 Nginx 이미지 사용
     container_name: main_nginx
     volumes:
-      - ./sites-enabled/:/etc/nginx/sites-enabled  # 현재 디렉토리 기준
       - ./sites-available/:/etc/nginx/sites-available  # 현재 디렉토리 기준
       - ./nginx.conf:/etc/nginx/nginx.conf  # 현재 디렉토리 기준
     ports:

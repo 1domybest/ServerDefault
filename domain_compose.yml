@@ -1,0 +1,4 @@
+services:
+  nginx:
+    container_name: main_nginx
+    command: /bin/bash ./entrypoint.sh

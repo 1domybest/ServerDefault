@@ -1,0 +1,10 @@
+services:
+  nginx:
+    build:
+      context: .  # Dockerfile이 있는 디렉터리 경로 (현재 디렉터리)
+      dockerfile: Dockerfile  # Dockerfile 이름 (기본적으로 'Dockerfile'이므로 생략 가능)
+    container_name: main_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
