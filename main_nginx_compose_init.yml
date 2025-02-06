@@ -27,5 +27,8 @@ services:
       - ./certbot-webroot:/var/www/certbot  # 인증서 검증을 위한 웹 루트
       - ./new_certificates.sh:/usr/local/bin/new_certificates.sh  # 인증서 발급 스크립트 [더미 인증서재거 + 신규발급]
       - ./renew_certificates.sh:/usr/local/bin/renew_certificates.sh  # 크론을 사용한 인증서 재발급 스크립트
+#    environment:
+#      - DOMAINS=seoktae.duckdns.org  # 인증서 발급에 사용할 도메인 [ 여러 도메인을 띄어쓰기로 구분하여 전달 ]
+#      - EMAIL=dhstjrxo123@gmail.com  # 이메일
     entrypoint: [ "/bin/bash", "/usr/local/bin/new_certificates.sh" ]  # entrypoint.sh 실행
     restart: on-failure

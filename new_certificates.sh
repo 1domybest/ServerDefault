@@ -3,6 +3,13 @@
 # 환경 변수로 DOMAINS를 사용하여 배열 정의
 IFS=' ' read -r -a domains <<< "$DOMAINS"  # 띄어쓰기로 구분하여 배열로 변환
 
+# 배열 내용 출력
+echo "DOMAINS 환경 변수 값: $DOMAINS"  # 원본 DOMAINS 값 출력
+echo "배열로 변환된 DOMAINS:"
+for domain in "${domains[@]}"; do
+  echo "  $domain"  # 배열의 각 도메인 값 출력
+done
+
 rsa_key_size=4096
 data_path="./data/certbot"
 staging=0  # Set to 1 if you're testing your setup to avoid hitting request limits
