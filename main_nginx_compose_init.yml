@@ -4,7 +4,7 @@ services:
       context: .  # Dockerfile이 있는 디렉터리 경로 (현재 디렉터리)
       dockerfile: main_nginx_Dockerfile  # main_nginx_Dockerfile 이름 (기본적으로 'main_nginx_Dockerfile'이므로 생략 가능)
       args:
-        DOMAINS: "seoktae2.duckdns.org " # 사용할 도메인 배열 [여기에서 배열은 띄어쓰기로 구분]
+        DOMAINS: "seoktae.duckdns.org " # 사용할 도메인 배열 [여기에서 배열은 띄어쓰기로 구분]
         EMAIL: "dhstjrxo123@gmail.com" # 이메일
     container_name: main_nginx
     ports:
@@ -32,7 +32,7 @@ services:
       - ./data/certbot:/etc/letsencrypt  # 인증서 저장 경로
       - ./certbot-webroot:/var/www/certbot  # 인증서 검증을 위한 웹 루트
     environment:
-      - DOMAINS=seoktae2.duckdns.org  # 인증서 발급에 사용할 도메인 [ 여러 도메인을 띄어쓰기로 구분하여 전달 ]
+      - DOMAINS=seoktae.duckdns.org  # 인증서 발급에 사용할 도메인 [ 여러 도메인을 띄어쓰기로 구분하여 전달 ]
       - EMAIL=dhstjrxo123@gmail.com  # 이메일
     entrypoint: [ "/bin/bash", "/scripts/new_certificates.sh" ]  # entrypoint.sh 실행
     restart: on-failure

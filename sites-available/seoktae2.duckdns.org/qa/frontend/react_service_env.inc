@@ -1,1 +1,0 @@
-set $react_service_url react_qa_blue;

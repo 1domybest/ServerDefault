@@ -1,1 +1,0 @@
-set $springboot_service_url springboot_qa_blue;
