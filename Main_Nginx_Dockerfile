@@ -8,6 +8,8 @@ ENV DOMAINS=${DOMAINS}
 # 폴더가 없다면 생성
 RUN mkdir -p /etc/nginx/sites-enabled /etc/nginx/sites-available
 
+RUN mkdir -p /var/www/certbot
+
 # 더미인증서를 넣을 폴더
 RUN /bin/sh -c 'set -o noglob; echo "Setting up domains: $DOMAINS"; \
     for domain in $DOMAINS; do \

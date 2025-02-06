@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-# 환경 변수로 DOMAINS를 사용하여 배열 정의
+
+# 환경 변수로 DOMAINS를 사용하여 공백을 기준으로 배열로 변환
 IFS=' ' read -r -a domains <<< "$DOMAINS"  # 띄어쓰기로 구분하여 배열로 변환
 
 # 배열 내용 출력
@@ -17,10 +18,9 @@ staging=0  # Set to 1 if you're testing your setup to avoid hitting request limi
 # 도메인 배열을 반복하면서 심볼릭 링크 삭제
 for domain in "${domains[@]}"; do
   echo "### Deleting dummy certificate for $domain ..."
-  docker-compose run --rm --entrypoint "\
-    rm -Rf /etc/letsencrypt/live/$domain && \
+  docker-compose run --rm certbot /bin/bash -c "rm -Rf /etc/letsencrypt/live/$domain && \
     rm -Rf /etc/letsencrypt/archive/$domain && \
-    rm -Rf /etc/letsencrypt/renewal/$domain.conf" certbot
+    rm -Rf /etc/letsencrypt/renewal/$domain.conf"
   echo
 done
 
@@ -41,14 +41,13 @@ if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
 # Let's Encrypt 인증서 요청
 echo "### Requesting Let's Encrypt certificate for $domains ..."
-docker-compose run --rm --entrypoint "\
-  certbot certonly --webroot -w /var/www/certbot \
-    $staging_arg \
-    $email_arg \
-    $domain_args \
-    --rsa-key-size $rsa_key_size \
-    --agree-tos \
-    --force-renewal" certbot
+docker-compose run --rm certbot /bin/bash -c "certbot certonly --webroot -w /var/www/certbot \
+  $staging_arg \
+  $email_arg \
+  $domain_args \
+  --rsa-key-size $rsa_key_size \
+  --agree-tos \
+  --force-renewal"
 echo
 
 # Nginx 재시작
