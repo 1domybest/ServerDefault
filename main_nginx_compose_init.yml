@@ -21,7 +21,6 @@ services:
     build:
       context: .  # Dockerfile이 있는 디렉터리 경로 (현재 디렉터리)
       dockerfile: cert_Dockerfile  # Main_Nginx_Dockerfile 이름 (기본적으로 'Main_Nginx_Dockerfile'이므로 생략 가능)
-#    image: certbot/certbot
     container_name: certbot
     depends_on:
       - nginx
@@ -33,5 +32,5 @@ services:
     environment:
       - DOMAINS=seoktae.duckdns.org  # 인증서 발급에 사용할 도메인 [ 여러 도메인을 띄어쓰기로 구분하여 전달 ]
       - EMAIL=dhstjrxo123@gmail.com  # 이메일
-    entrypoint: [ "/bin/sh", "/scripts/new_certificates.sh" ]  # entrypoint.sh 실행
+    entrypoint: [ "/bin/bash", "/scripts/new_certificates.sh" ]  # entrypoint.sh 실행
     restart: on-failure

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # 환경 변수로 DOMAINS와 EMAIL을 받아서 사용
 IFS=' ' read -r -a domains <<< "$DOMAINS"  # 띄어쓰기로 구분하여 배열로 변환
 
@@ -23,13 +24,12 @@ if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
 # 인증서 갱신
 echo "### Renewing Let's Encrypt certificate for $domains ..."
-docker-compose run --rm --entrypoint "\
-  certbot renew --webroot -w /var/www/certbot \
-    $staging_arg \
-    $email_arg \
-    $domain_args" certbot
+certbot renew --webroot -w /var/www/certbot \
+  $staging_arg \
+  $email_arg \
+  $domain_args
 echo
 
 # Nginx 재시작
 echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload
+#nginx -s reload

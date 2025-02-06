@@ -1,58 +1,61 @@
-#!/bin/sh
+#!/bin/bash
 
+# 도메인 환경 변수 받기
+domains=$DOMAINS
 
-# 환경 변수로 DOMAINS를 사용하여 공백을 기준으로 배열로 변환
-IFS=' ' read -r -a domains <<< "$DOMAINS"  # 띄어쓰기로 구분하여 배열로 변환
-
-# 배열 내용 출력
-echo "DOMAINS 환경 변수 값: $DOMAINS"  # 원본 DOMAINS 값 출력
+# 도메인 목록을 출력
+echo "DOMAINS 환경 변수 값: $DOMAINS"
 echo "배열로 변환된 DOMAINS:"
-for domain in "${domains[@]}"; do
-  echo "  $domain"  # 배열의 각 도메인 값 출력
+IFS=' ' read -r -a domain_array <<< "$domains"
+for domain in "${domain_array[@]}"; do
+  echo "  $domain"
 done
 
 rsa_key_size=4096
-data_path="./data/certbot"
-staging=0  # Set to 1 if you're testing your setup to avoid hitting request limits
 
-# 도메인 배열을 반복하면서 심볼릭 링크 삭제
-for domain in "${domains[@]}"; do
+staging=0  # 테스트 모드 설정 (0: 실제 인증서 발급, 1: 테스트 발급)
+
+# 더미 인증서 삭제
+for domain in "${domain_array[@]}"; do
   echo "### Deleting dummy certificate for $domain ..."
-  docker-compose run --rm certbot /bin/bash -c "rm -Rf /etc/letsencrypt/live/$domain && \
-    rm -Rf /etc/letsencrypt/archive/$domain && \
-    rm -Rf /etc/letsencrypt/renewal/$domain.conf"
+  rm -Rf /etc/letsencrypt/live/$domain && \
+  rm -Rf /etc/letsencrypt/archive/$domain && \
+  rm -Rf /etc/letsencrypt/renewal/$domain.conf
   echo
 done
 
-# 이메일이 설정되어 있지 않으면 --register-unsafely-without-email 사용
-case "$EMAIL" in
-  "") email_arg="--register-unsafely-without-email" ;;
-  *) email_arg="--email $EMAIL" ;;
-esac
+# 이메일 인자 설정 (이메일이 없다면 --register-unsafely-without-email 사용)
+if [ -z "$EMAIL" ]; then
+  email_arg="--register-unsafely-without-email"
+else
+  email_arg="--email $EMAIL"
+fi
 
-# 도메인 배열을 -d 인자 형태로 변환
+# 도메인 인자를 -d 형식으로 변환
 domain_args=""
-for domain in "${domains[@]}"; do
+for domain in "${domain_array[@]}"; do
   domain_args="$domain_args -d $domain"
 done
 
 # 스테이징 모드를 사용할 경우 --staging 인자 추가
-if [ $staging != "0" ]; then staging_arg="--staging"; fi
+if [ $staging != "0" ]; then
+  staging_arg="--staging"
+fi
 
 # Let's Encrypt 인증서 요청
 echo "### Requesting Let's Encrypt certificate for $domains ..."
-docker-compose run --rm certbot /bin/bash -c "certbot certonly --webroot -w /var/www/certbot \
+certbot certonly --webroot -w /var/www/certbot \
   $staging_arg \
   $email_arg \
   $domain_args \
   --rsa-key-size $rsa_key_size \
   --agree-tos \
-  --force-renewal"
+  --force-renewal
 echo
 
 # Nginx 재시작
 echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload
+#nginx -s reload
 
-# 크론 작업을 추가 (매일 오전 3시마다 인증서 갱신을 시도)
-(crontab -l 2>/dev/null; echo "0 3 * * * EMAIL=\"$EMAIL\" DOMAINS=\"$DOMAINS\" /bin/bash /usr/local/bin/renew_certificates.sh >> /usr/local/bin/renew_certificates.log 2>&1") | crontab -
+# 크론 작업 추가 (매일 오전 3시마다 인증서 갱신을 시도)
+(crontab -l 2>/dev/null; echo "0 3 * * * EMAIL=\"$EMAIL\" DOMAINS=\"$DOMAINS\" /bin/bash /scripts/renew_certificates.sh >> /scripts/renew_certificates.log 2>&1") | crontab -

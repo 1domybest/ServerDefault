@@ -2,3 +2,4 @@ FROM certbot/certbot
 
 # Alpine 기반이라면 bash 설치를 apk를 사용하여 해야 합니다
 RUN apk update && apk add --no-cache bash
+
