@@ -2,7 +2,7 @@ services:
   nginx:
     build:
       context: .  # Dockerfile이 있는 디렉터리 경로 (현재 디렉터리)
-      dockerfile: Main_Nginx_Dockerfile  # Main_Nginx_Dockerfile 이름 (기본적으로 'Main_Nginx_Dockerfile'이므로 생략 가능)
+      dockerfile: main_nginx_Dockerfile  # main_nginx_Dockerfile 이름 (기본적으로 'main_nginx_Dockerfile'이므로 생략 가능)
       args:
         DOMAINS: "seoktae2.duckdns.org " # 사용할 도메인 배열 [여기에서 배열은 띄어쓰기로 구분]
         EMAIL: "dhstjrxo123@gmail.com" # 이메일
@@ -22,7 +22,7 @@ services:
   certbot:
     build:
       context: .  # Dockerfile이 있는 디렉터리 경로 (현재 디렉터리)
-      dockerfile: cert_Dockerfile  # Main_Nginx_Dockerfile 이름 (기본적으로 'Main_Nginx_Dockerfile'이므로 생략 가능)
+      dockerfile: cert_Dockerfile  # main_nginx_Dockerfile 이름 (기본적으로 'main_nginx_Dockerfile'이므로 생략 가능)
     container_name: certbot
     depends_on:
       - nginx

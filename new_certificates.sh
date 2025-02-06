@@ -1,4 +1,5 @@
 #!/bin/bash
+# 참고 스크립트 => https://raw.githubusercontent.com/wmnnd/nginx-certbot/master/init-letsencrypt.sh
 
 # 도메인 환경 변수 받기
 domains=$DOMAINS

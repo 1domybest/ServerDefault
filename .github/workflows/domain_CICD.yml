@@ -40,10 +40,10 @@ jobs:
           find . -name "Dockerfile"
 
 
-      # 도커 빌드 (Main_Nginx_Dockerfile 경로 지정)
+      # 도커 빌드 (main_nginx_Dockerfile 경로 지정)
 #       - name: Build Docker
 #         run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/spring_none_stop_deploy_docker .
-# #        run: docker build --platform linux/amd64 -f Main_Nginx_Dockerfile -t "${{ secrets.DOCKER_DOCKERHUB_USERNAME }}/main_server:latest" .
+# #        run: docker build --platform linux/amd64 -f main_nginx_Dockerfile -t "${{ secrets.DOCKER_DOCKERHUB_USERNAME }}/main_server:latest" .
 
 
 
