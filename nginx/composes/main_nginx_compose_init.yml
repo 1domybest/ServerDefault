@@ -1,3 +1,4 @@
+# nginx 시작전에 Certbot 이 먼저 실행되야함
 services:
   nginx:
     build:
