@@ -1,0 +1,10 @@
+services:
+  certbot:
+    build:
+      dockerfile: ../../certbot/dockerfiles/cert_Dockerfile  # main_nginx_Dockerfile 이름 (기본적으로 'main_nginx_Dockerfile'이므로 생략 가능)
+    container_name: certbot
+    volumes:
+      - ../../certbot/config/certbot-webroot:/var/www/certbot  # 인증서 검증을 위한 웹 루트
+      - ../../certbot/config/etc/letsencrypt:/etc/letsencrypt  # 인증서 저장 경로
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    restart: unless-stopped

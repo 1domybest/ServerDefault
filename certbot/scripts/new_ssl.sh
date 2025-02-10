@@ -28,7 +28,7 @@ if [ $? -eq 0 ]; then
     DOMAIN=$domain ./ssl_succeed_handler.sh
 
     # nginx에 인증서 파일 복사
-    docker cp certbot:/etc/letsencrypt ../config/etc/letsencrypt
+    docker cp certbot:/etc/letsencrypt ./config/etc/letsencrypt
     # nginx 재시작
     docker exec -it main_nginx nginx -s reload
 
