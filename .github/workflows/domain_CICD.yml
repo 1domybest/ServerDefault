@@ -32,5 +32,5 @@ jobs:
             
             cd /home/ubuntu/GitHub/ServerDefault/nginx/scripts
             
-            ./reload_nginx.sh
+            sudo ./reload_nginx.sh
             
