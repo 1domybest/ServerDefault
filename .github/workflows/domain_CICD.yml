@@ -28,11 +28,13 @@ jobs:
           script: |
             sudo -i
             
+            git config --global --add safe.directory /home/ubuntu/GitHub/ServerDefault
+            
             cd /home/ubuntu/GitHub/ServerDefault
             
             git pull main main
             
             cd /home/ubuntu/GitHub/ServerDefault/nginx/scripts
             
-            sudo ./reload_nginx.sh
+            ./reload_nginx.sh
             
