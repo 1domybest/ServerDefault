@@ -26,6 +26,8 @@ jobs:
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
           script: |
+            sudo -i
+            
             cd /home/ubuntu/GitHub/ServerDefault
             
             git pull main main
