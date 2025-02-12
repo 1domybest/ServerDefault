@@ -7,9 +7,9 @@ env:
 
 on:
   push:
-    branches: ["qa", "prod"]
+    branches: ["main", "qa", "prod"]
   pull_request:
-    branches: ["qa", "prod"]
+    branches: ["main", "qa", "prod"]
 
 permissions:
   contents: read
