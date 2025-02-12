@@ -1,0 +1,36 @@
+name: CI
+
+env:
+  SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+  SERVER_IP: ${{ secrets.SERVER_IP }}
+  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+on:
+  push:
+    branches: ["qa", "prod"]
+  pull_request:
+    branches: ["qa", "prod"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy with Docker Compose
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.EC2_SSH_KEY }}
+          script_stop: true
+          script: |
+            cd /home/ubuntu/GitHub/ServerDefault
+            
+            git pull main main
+            
+            cd /home/ubuntu/GitHub/ServerDefault/nginx/scripts
+            
+            ./reload_nginx.sh
+            
