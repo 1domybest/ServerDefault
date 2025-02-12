@@ -32,9 +32,11 @@ jobs:
             
             cd /home/ubuntu/GitHub/ServerDefault
             
-            git pull main main
+            # `git pull`을 sudo로 실행
+            sudo git pull origin main
             
             cd /home/ubuntu/GitHub/ServerDefault/nginx/scripts
             
-            ./reload_nginx.sh
+            # `reload_nginx.sh` 실행 전에 sudo 권한 확인
+            sudo ./reload_nginx.sh
             
