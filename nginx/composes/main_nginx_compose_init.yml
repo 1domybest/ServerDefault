@@ -5,7 +5,7 @@ services:
     build:
       dockerfile: ../../nginx/dockerfiles/main_nginx_Dockerfile   # main_nginx_Dockerfile 이름 (기본적으로 'main_nginx_Dockerfile'이므로 생략 가능)
       args:
-        DOMAINS: "seoktae8.duckdns.org " # 사용할 도메인 배열 [여기에서 배열은 띄어쓰기로 구분]
+        DOMAINS: "seoktae.online " # 사용할 도메인 배열 [여기에서 배열은 띄어쓰기로 구분]
         EMAIL: "dhstjrxo123@gmail.com" # 이메일
     container_name: main_nginx
     ports:
